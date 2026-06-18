@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MY Trip">
+<meta name="theme-color" content="#0a0f1a">
+<title>Malásia & Singapura 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.6.0/dist/tabler-icons.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+--bg:#0a0f1a;--bg2:#131a2b;--bg3:#1a2338;--bg4:#222e45;
+--text:#f0f2f5;--text2:#99a4b8;--text3:#5e6b82;
+--accent:#3b82f6;--accent2:#60a5fa;
+--green:#10b981;--green-bg:rgba(16,185,129,.12);
+--amber:#f59e0b;--amber-bg:rgba(245,158,11,.12);
+--coral:#f97316;--coral-bg:rgba(249,115,22,.12);
+--teal:#14b8a6;--teal-bg:rgba(20,184,166,.12);
+--pink:#ec4899;--pink-bg:rgba(236,72,153,.12);
+--red:#ef4444;--red-bg:rgba(239,68,68,.12);
+--border:rgba(255,255,255,.06);
+--radius:14px;--radius-sm:10px;
+}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;overflow-x:hidden}
+.app{max-width:430px;margin:0 auto;padding-bottom:80px}
+.hero{padding:env(safe-area-inset-top,20px) 20px 20px;background:linear-gradient(160deg,#1e3a5f 0%,#0a0f1a 100%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(59,130,246,.15),transparent 70%);border-radius:50%}
+.hero-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent2);margin-bottom:6px;padding-top:12px}
+.hero h1{font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:4px}
+.hero-sub{font-size:13px;color:var(--text2);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.hero-sub span{display:flex;align-items:center;gap:4px}
+.countdown{display:inline-flex;align-items:center;gap:5px;background:var(--accent);color:#fff;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-top:10px}
+.nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:rgba(10,15,26,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:100;padding-bottom:env(safe-area-inset-bottom,0)}
+.nav-inner{display:flex;max-width:430px;margin:0 auto;width:100%}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 0 6px;background:none;border:none;color:var(--text3);font-size:10px;font-family:inherit;cursor:pointer;transition:color .15s}
+.nav button i{font-size:22px;transition:color .15s}
+.nav button.active{color:var(--accent2)}
+.nav button.active i{color:var(--accent2)}
+.section{display:none;padding:16px 16px 0}
+.section.active{display:block}
+.sect-title{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin:20px 0 10px;padding-left:2px}
+.sect-title:first-child{margin-top:4px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px}
+.card-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border)}
+.card-row:last-child{border-bottom:none}
+.card-label{font-size:12px;color:var(--text2)}
+.card-value{font-size:13px;color:var(--text);text-align:right;max-width:58%;font-weight:500}
+.day{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden}
+.day-head{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;user-select:none}
+.day-head .left{display:flex;align-items:center;gap:10px}
+.day-num{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.day-info .date{font-size:13px;font-weight:600;color:var(--text)}
+.day-info .loc{font-size:11px;color:var(--text2);margin-top:1px}
+.day-head i.chev{font-size:18px;color:var(--text3);transition:transform .2s}
+.day.open .chev{transform:rotate(180deg)}
+.day-body{display:none;padding:0 16px 14px}
+.day.open .day-body{display:block}
+.evt{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--border)}
+.evt:first-child{border-top:none}
+.evt-time{font-size:11px;color:var(--text3);min-width:40px;padding-top:2px;font-weight:500;font-variant-numeric:tabular-nums}
+.evt-body{flex:1}
+.evt-title{font-size:13px;font-weight:500;color:var(--text)}
+.evt-detail{font-size:11px;color:var(--text2);margin-top:2px;line-height:1.5}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;margin-top:4px}
+.pill-flight{background:rgba(59,130,246,.15);color:#60a5fa}
+.pill-hotel{background:var(--green-bg);color:var(--green)}
+.pill-transfer{background:var(--amber-bg);color:var(--amber)}
+.pill-ferry{background:var(--teal-bg);color:var(--teal)}
+.pill-bus{background:var(--pink-bg);color:var(--pink)}
+.hotel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;position:relative}
+.hotel-name{font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px}
+.hotel-meta{display:flex;flex-wrap:wrap;gap:8px;font-size:11px;color:var(--text2);margin-bottom:8px}
+.hotel-meta span{display:flex;align-items:center;gap:3px}
+.hotel-price{font-size:14px;font-weight:600;color:var(--accent2)}
+.hotel-per{font-size:11px;color:var(--text3);margin-left:6px;font-weight:400}
+.hotel-note{font-size:11px;color:var(--amber);margin-top:6px;display:flex;align-items:flex-start;gap:4px}
+.alert-card{background:var(--red-bg);border:1px solid rgba(239,68,68,.2);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:12px;display:flex;gap:10px;align-items:flex-start}
+.alert-card i{color:var(--red);font-size:18px;flex-shrink:0;margin-top:1px}
+.alert-card p{font-size:12px;color:#fca5a5;line-height:1.5}
+.alert-card strong{color:var(--red);font-weight:600}
+.info-alert{background:var(--amber-bg);border:1px solid rgba(245,158,11,.15);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:12px;display:flex;gap:10px;align-items:flex-start}
+.info-alert i{color:var(--amber);font-size:18px;flex-shrink:0;margin-top:1px}
+.info-alert p{font-size:12px;color:#fcd34d;line-height:1.5}
+.doc-link{display:flex;align-items:center;gap:14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;text-decoration:none;transition:border-color .15s}
+.doc-link:active{border-color:var(--accent)}
+.doc-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.doc-name{font-size:14px;font-weight:500;color:var(--text)}
+.doc-desc{font-size:11px;color:var(--text2);margin-top:2px}
+.total-bar{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:6px;margin-bottom:10px}
+.total-bar .label{font-size:13px;font-weight:500;color:var(--text2)}
+.total-bar .value{font-size:18px;font-weight:700;color:var(--text)}
+.payment-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.payment-row:last-child{border-bottom:none}
+.payment-label{font-size:12px;color:var(--text2)}
+.payment-value{font-size:13px;font-weight:500;color:var(--text)}
+.payment-status{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px}
+.status-paid{background:var(--green-bg);color:var(--green)}
+.status-pending{background:var(--amber-bg);color:var(--amber)}
+.contact-card{display:flex;align-items:center;gap:14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px}
+.contact-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
+.contact-name{font-size:14px;font-weight:500;color:var(--text)}
+.contact-role{font-size:11px;color:var(--text2);margin-top:1px}
+.contact-phone{font-size:12px;color:var(--accent2);margin-top:4px;text-decoration:none;display:flex;align-items:center;gap:4px}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="hero">
+<div class="hero-label">Viagem 2026</div>
+<h1>Malásia & Singapura</h1>
+<div class="hero-sub">
+<span><i class="ti ti-calendar" style="font-size:14px"></i> 18 Jul – 2 Ago</span>
+<span><i class="ti ti-users" style="font-size:14px"></i> 4 pessoas</span>
+<span><i class="ti ti-moon-stars" style="font-size:14px"></i> 14 noites</span>
+</div>
+<div class="countdown" id="countdown"></div>
+</div>
+
+<div id="tab-itinerary" class="section active">
+<div class="alert-card">
+<i class="ti ti-alert-triangle"></i>
+<p>Voo de ida alterado para <strong>Lisboa</strong>. Autocarro Porto → Lisboa na noite de 17 Jul. Regresso mantém-se ao Porto.</p>
+</div>
+<div class="info-alert">
+<i class="ti ti-luggage"></i>
+<p>Bagagem mínima nos voos internos: <strong>20 kg</strong> para porão. Levar <strong>MYR em dinheiro</strong> para barcos em Perhentian.</p>
+</div>
+<div class="sect-title">Itinerário dia a dia</div>
+<div id="days"></div>
+</div>
+
+<div id="tab-hotels" class="section">
+<div class="sect-title">Alojamento (2 quartos duplos)</div>
+<div id="hotels-list"></div>
+<div class="total-bar">
+<span class="label">Total hotéis (4 pax)</span>
+<span class="value">€4.861</span>
+</div>
+</div>
+
+<div id="tab-money" class="section">
+<div class="sect-title">Pagamentos por pessoa</div>
+<div class="card" id="payments"></div>
+<div class="total-bar">
+<span class="label">Total estimado / pessoa</span>
+<span class="value">~€2.580</span>
+</div>
+<div class="sect-title">Dados bancários (Martins Soares)</div>
+<div class="card">
+<div class="card-row"><span class="card-label">Banco</span><span class="card-value">ABANCA</span></div>
+<div class="card-row"><span class="card-label">IBAN</span><span class="card-value" style="font-size:11px;font-family:monospace">PT50 0170 3883 0304 0116 2286 9</span></div>
+</div>
+<div class="sect-title">Transfers (total 4 pax ida e volta)</div>
+<div class="card">
+<div class="card-row"><span class="card-label">KL aeroporto ↔ hotel</span><span class="card-value">€52</span></div>
+<div class="card-row"><span class="card-label">Kota Bharu ↔ Kuala Besut</span><span class="card-value">€100/sentido/van</span></div>
+<div class="card-row"><span class="card-label">Penang aeroporto ↔ hotel</span><span class="card-value">€45</span></div>
+<div class="card-row"><span class="card-label">Singapura aeroporto ↔ hotel</span><span class="card-value">€75</span></div>
+</div>
+</div>
+
+<div id="tab-info" class="section">
+<div class="sect-title">Voos internos confirmados</div>
+<div class="card">
+<div class="card-row"><span class="card-label">23 Jul · KL → Kota Bharu</span><span class="card-value">FY1146<br>10h20 – 11h30</span></div>
+<div class="card-row"><span class="card-label">27 Jul · Kota Bharu → Penang</span><span class="card-value">MH5507<br>20h20 – 21h20</span></div>
+<div class="card-row"><span class="card-label">30 Jul · Penang → Singapura</span><span class="card-value">SQ 133<br>11h55 – 13h35</span></div>
+</div>
+<div class="sect-title">Ferry Perhentian (horários atualizados)</div>
+<div class="card">
+<div class="card-row"><span class="card-label">Ida (Jetty → Marriott)</span><span class="card-value">09:00 ou 14:00</span></div>
+<div class="card-row"><span class="card-label">Volta (Marriott → Jetty)</span><span class="card-value">12:00 ou 16:00</span></div>
+<div class="card-row"><span class="card-label">Lounge check-in</span><span class="card-value">1h30 antes</span></div>
+<div class="card-row"><span class="card-label">Barco público (backup)</span><span class="card-value">RM 40/pax · cash MYR</span></div>
+</div>
+<div class="info-alert" style="margin-top:4px">
+<i class="ti ti-info-circle"></i>
+<p>23 Jul: último ferry do hotel às 14h00. Se o voo atrasar, pedir ao motorista para ir ao escritório da Perhentian Trans Holiday na estação pública de Kuala Besut (barcos mais tarde).</p>
+</div>
+<div class="sect-title">Transfer Kota Bharu (confirmado)</div>
+<div class="card">
+<div class="card-row"><span class="card-label">Carro</span><span class="card-value">Toyota Vellfire</span></div>
+<div class="card-row"><span class="card-label">Confirmação</span><span class="card-value" style="font-size:11px">#81219132 / #81219145</span></div>
+<div class="card-row"><span class="card-label">Nomes</span><span class="card-value">Francisco Bastos &<br>Maria Carolina Bastos</span></div>
+<div class="card-row"><span class="card-label">Contacto viagem</span><span class="card-value">Carolina (telemóvel)</span></div>
+</div>
+<div class="sect-title">Seguro de viagem</div>
+<div class="card">
+<div class="card-row"><span class="card-label">Plano</span><span class="card-value">Fidelidade Gold</span></div>
+<div class="card-row"><span class="card-label">Consulta do viajante</span><span class="card-value"><a href="tel:+351214238422" style="color:#60a5fa;text-decoration:none">214 238 422</a></span></div>
+</div>
+<div class="doc-link" href="https://drive.google.com/file/d/10tGlO98IODZjtCo2OOK9saMBgj6h7i9W/view?usp=sharing" onclick="window.open(this.getAttribute('href'))">
+<div class="doc-icon" style="background:var(--red-bg);color:var(--red)"><i class="ti ti-file-text"></i></div>
+<div>
+<div class="doc-name">Apólice do seguro</div>
+<div class="doc-desc">PDF · Malásia & Singapura <i class="ti ti-external-link" style="font-size:10px"></i></div>
+</div>
+</div>
+<div class="sect-title">Agência</div>
+<div class="contact-card">
+<div class="contact-avatar" style="background:rgba(59,130,246,.15);color:#60a5fa">EN</div>
+<div>
+<div class="contact-name">Eugénia Nogueira</div>
+<div class="contact-role">Martins Soares Luxury Travel</div>
+<a href="tel:+351918206941" class="contact-phone"><i class="ti ti-phone" style="font-size:14px"></i> (+351) 918 206 941</a>
+</div>
+</div>
+</div>
+
+<nav class="nav">
+<div class="nav-inner">
+<button class="active" onclick="go('itinerary')"><i class="ti ti-route"></i>Itinerário</button>
+<button onclick="go('hotels')"><i class="ti ti-building"></i>Hotéis</button>
+<button onclick="go('money')"><i class="ti ti-credit-card"></i>Custos</button>
+<button onclick="go('info')"><i class="ti ti-info-circle"></i>Info</button>
+</div>
+</nav>
+</div>
+
+<script>
+function go(tab){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.getElementById('tab-'+tab).classList.add('active');
+document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+event.currentTarget.classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});
+}
+
+const cd=document.getElementById('countdown');
+const trip=new Date('2026-07-17T22:00:00');
+function updateCD(){
+const now=new Date();const diff=trip-now;
+if(diff<=0){cd.textContent='A viagem começou!';return}
+const d=Math.floor(diff/864e5);
+cd.innerHTML='<i class="ti ti-plane-departure" style="font-size:13px"></i> '+d+' dias para a viagem';
+}
+updateCD();setInterval(updateCD,36e5);
+
+const days=[
+{date:"17 Jul, Qui",loc:"Porto → Lisboa",color:"var(--pink)",colorBg:"var(--pink-bg)",events:[
+{time:"~22h",title:"Autocarro Porto → Lisboa",detail:"Viagem noturna até ao Aeroporto de Lisboa",pill:"bus",pillLabel:"Autocarro"}
+]},
+{date:"18 Jul, Sex",loc:"Lisboa → Istambul → KL",color:"var(--accent2)",colorBg:"rgba(59,130,246,.15)",events:[
+{time:"",title:"Voo Lisboa → Istambul",detail:"Turkish Airlines · escala em Istambul",pill:"flight",pillLabel:"Voo"},
+{time:"01h40",title:"Voo Istambul → Kuala Lumpur",detail:"TK 60 · chegada 17h15 (+1 dia, 19 Jul)",pill:"flight",pillLabel:"Voo"}
+]},
+{date:"19 Jul, Sáb",loc:"Kuala Lumpur",color:"var(--green)",colorBg:"var(--green-bg)",events:[
+{time:"17h15",title:"Chegada a Kuala Lumpur",detail:"Transfer aeroporto → hotel (€52 ida e volta)",pill:"transfer",pillLabel:"Transfer"},
+{time:"",title:"Check-in Novotel KL City Centre",detail:"4 noites · 2 quartos duplos · €790",pill:"hotel",pillLabel:"Hotel"}
+]},
+{date:"23 Jul, Qui",loc:"KL → Kota Bharu → Perhentian",color:"var(--teal)",colorBg:"var(--teal-bg)",events:[
+{time:"~08h",title:"Transfer hotel → aeroporto KL",detail:"",pill:"transfer",pillLabel:"Transfer"},
+{time:"10h20",title:"Voo FY1146 · KL → Kota Bharu",detail:"Chegada 11h30",pill:"flight",pillLabel:"Voo"},
+{time:"~12h",title:"Transfer Vellfire · aeroporto → Kuala Besut Jetty",detail:"Confirmação #81219132 · ~90 min viagem",pill:"transfer",pillLabel:"Transfer"},
+{time:"14h00",title:"Ferry hotel para Perhentian Island",detail:"Último ferry do hotel: 14h00. Backup: barco público (RM40/pax, cash MYR)",pill:"ferry",pillLabel:"Ferry"},
+{time:"",title:"Check-in Marriott Resort & Spa",detail:"4 noites · 2 quartos duplos · €2.450",pill:"hotel",pillLabel:"Hotel"}
+]},
+{date:"27 Jul, Dom",loc:"Perhentian → Penang",color:"var(--coral)",colorBg:"var(--coral-bg)",events:[
+{time:"12h00",title:"Ferry Marriott → Kuala Besut Jetty",detail:"Recomendado o das 12h00 (16h00 é arriscado)",pill:"ferry",pillLabel:"Ferry"},
+{time:"~13h30",title:"Transfer Vellfire · Jetty → aeroporto Kota Bharu",detail:"Confirmação #81219145 · ~90 min",pill:"transfer",pillLabel:"Transfer"},
+{time:"20h20",title:"Voo MH5507 · Kota Bharu → Penang",detail:"Chegada 21h20",pill:"flight",pillLabel:"Voo"},
+{time:"~22h",title:"Transfer aeroporto → hotel Penang",detail:"€45 ida e volta",pill:"transfer",pillLabel:"Transfer"},
+{time:"",title:"Check-in JEN Penang by Shangri-La",detail:"3 noites · 2 quartos duplos · €581",pill:"hotel",pillLabel:"Hotel"}
+]},
+{date:"30 Jul, Qui",loc:"Penang → Singapura",color:"var(--accent2)",colorBg:"rgba(59,130,246,.15)",events:[
+{time:"~09h",title:"Transfer hotel → aeroporto Penang",detail:"",pill:"transfer",pillLabel:"Transfer"},
+{time:"11h55",title:"Voo SQ 133 · Penang → Singapura",detail:"Chegada 13h35",pill:"flight",pillLabel:"Voo"},
+{time:"~14h",title:"Transfer aeroporto → hotel Singapura",detail:"€75 ida e volta",pill:"transfer",pillLabel:"Transfer"},
+{time:"",title:"Check-in Holiday Inn Express Clarke Quay",detail:"3 noites · 2 quartos duplos · €1.040",pill:"hotel",pillLabel:"Hotel"}
+]},
+{date:"2 Ago, Sáb",loc:"Singapura → Porto",color:"var(--pink)",colorBg:"var(--pink-bg)",events:[
+{time:"~18h30",title:"Transfer hotel → aeroporto Singapura",detail:"",pill:"transfer",pillLabel:"Transfer"},
+{time:"",title:"Voo Singapura → Istambul → Porto",detail:"Turkish Airlines · chegada ao Porto",pill:"flight",pillLabel:"Voo"}
+]}
+];
+
+const dc=document.getElementById('days');
+days.forEach((d,i)=>{
+const open=i<2;
+const el=document.createElement('div');
+el.className='day'+(open?' open':'');
+el.innerHTML=`
+<div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+<div class="left">
+<div class="day-num" style="background:${d.colorBg};color:${d.color}">${d.date.split(' ')[0].replace(',','')}</div>
+<div class="day-info"><div class="date">${d.date}</div><div class="loc">${d.loc}</div></div>
+</div>
+<i class="ti ti-chevron-down chev"></i>
+</div>
+<div class="day-body">
+${d.events.map(e=>`
+<div class="evt">
+<div class="evt-time">${e.time}</div>
+<div class="evt-body">
+<div class="evt-title">${e.title}</div>
+${e.detail?`<div class="evt-detail">${e.detail}</div>`:''}
+<span class="pill pill-${e.pill}">${e.pillLabel}</span>
+</div>
+</div>`).join('')}
+</div>`;
+dc.appendChild(el);
+});
+
+const hotels=[
+{name:"Novotel Kuala Lumpur City Centre",stars:"4★",rating:"8.3",dates:"19–23 Jul",nights:4,price:790,note:"Tarifa flexível · piscina · boa localização central"},
+{name:"Perhentian Marriott Resort & Spa",stars:"",rating:"",dates:"23–27 Jul",nights:4,price:2450,note:"Sem hospitais na ilha · acesso só por barco",warn:true,cancel:"Cancelamento grátis até 20 Jun 2026"},
+{name:"JEN Penang Georgetown by Shangri-La",stars:"4★",rating:"8.3",dates:"27–30 Jul",nights:3,price:581,note:""},
+{name:"Holiday Inn Express Singapore Clarke Quay",stars:"4★",rating:"8.5",dates:"30 Jul – 2 Ago",nights:3,price:1040,note:"Zona de nightlife · bom para jovens",cancel:"Cancelamento grátis até 23 Jun 2026"}
+];
+const hl=document.getElementById('hotels-list');
+hotels.forEach(h=>{
+const el=document.createElement('div');
+el.className='hotel';
+el.innerHTML=`
+<div class="hotel-name">${h.name}</div>
+<div class="hotel-meta">
+${h.stars?`<span><i class="ti ti-star" style="font-size:12px;color:var(--amber)"></i> ${h.stars} · ${h.rating}</span>`:''}
+<span><i class="ti ti-calendar" style="font-size:12px"></i> ${h.dates}</span>
+<span><i class="ti ti-moon-stars" style="font-size:12px"></i> ${h.nights} noites</span>
+</div>
+<div class="hotel-price">€${h.price.toLocaleString()}<span class="hotel-per">total (4 pax)</span></div>
+${h.note?`<div class="hotel-note">${h.warn?'<i class="ti ti-alert-triangle" style="font-size:13px"></i>':''} ${h.note}</div>`:''}
+${h.cancel?`<div style="font-size:11px;color:var(--green);margin-top:4px"><i class="ti ti-clock" style="font-size:12px;vertical-align:-1px"></i> ${h.cancel}</div>`:''}`;
+hl.appendChild(el);
+});
+
+const payments=[
+{label:"Sinalização (voos longo curso + seguro base)",value:"€1.150",status:"paid"},
+{label:"Voos internos",value:"€179,65",status:"paid"},
+{label:"Upgrade seguro (Gold)",value:"€35",status:"paid"},
+{label:"Hotéis (~€4.861 ÷ 4)",value:"~€1.215",status:"pending"}
+];
+const pc=document.getElementById('payments');
+payments.forEach(p=>{
+pc.innerHTML+=`
+<div class="payment-row">
+<div><div class="payment-label">${p.label}</div></div>
+<div style="display:flex;align-items:center;gap:8px">
+<span class="payment-value">${p.value}</span>
+<span class="payment-status ${p.status==='paid'?'status-paid':'status-pending'}">${p.status==='paid'?'Pago':'Pendente'}</span>
+</div>
+</div>`;
+});
+</script>
+</body>
+</html>

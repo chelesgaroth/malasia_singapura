@@ -1,23 +1,178 @@
 [
-  {"id":1,"date":"17 Jul","time":"~22h","title":"Autocarro Porto → Lisboa","detail":"Viagem noturna até ao Aeroporto de Lisboa","type":"bus"},
-  {"id":2,"date":"18 Jul","time":"","title":"Voo Lisboa → Istambul","detail":"Turkish Airlines · escala em Istambul","type":"flight"},
-  {"id":3,"date":"18 Jul","time":"01h40","title":"Voo Istambul → Kuala Lumpur","detail":"TK 60 · chegada 17h15 (+1 dia, 19 Jul)","type":"flight"},
-  {"id":4,"date":"19 Jul","time":"17h15","title":"Chegada a Kuala Lumpur","detail":"Transfer aeroporto → hotel (€52 ida e volta)","type":"transfer"},
-  {"id":5,"date":"19 Jul","time":"","title":"Check-in Novotel KL City Centre","detail":"4 noites · 2 quartos duplos · €790","type":"hotel"},
-  {"id":6,"date":"23 Jul","time":"~08h","title":"Transfer hotel → aeroporto KL","detail":"","type":"transfer"},
-  {"id":7,"date":"23 Jul","time":"10h20","title":"Voo FY1146 · KL → Kota Bharu","detail":"Chegada 11h30","type":"flight"},
-  {"id":8,"date":"23 Jul","time":"~12h","title":"Transfer Vellfire · aeroporto → Kuala Besut Jetty","detail":"Confirmação #81219132 · ~90 min viagem","type":"transfer"},
-  {"id":9,"date":"23 Jul","time":"14h00","title":"Ferry hotel para Perhentian Island","detail":"Último ferry do hotel: 14h00. Backup: barco público (RM40/pax, cash MYR)","type":"ferry"},
-  {"id":10,"date":"23 Jul","time":"","title":"Check-in Marriott Resort & Spa","detail":"4 noites · 2 quartos duplos · €2.450","type":"hotel"},
-  {"id":11,"date":"27 Jul","time":"12h00","title":"Ferry Marriott → Kuala Besut Jetty","detail":"Recomendado o das 12h00 (16h00 é arriscado)","type":"ferry"},
-  {"id":12,"date":"27 Jul","time":"~13h30","title":"Transfer Vellfire · Jetty → aeroporto Kota Bharu","detail":"Confirmação #81219145 · ~90 min","type":"transfer"},
-  {"id":13,"date":"27 Jul","time":"20h20","title":"Voo MH5507 · Kota Bharu → Penang","detail":"Chegada 21h20","type":"flight"},
-  {"id":14,"date":"27 Jul","time":"~22h","title":"Transfer aeroporto → hotel Penang","detail":"€45 ida e volta","type":"transfer"},
-  {"id":15,"date":"27 Jul","time":"","title":"Check-in JEN Penang by Shangri-La","detail":"3 noites · 2 quartos duplos · €581","type":"hotel"},
-  {"id":16,"date":"30 Jul","time":"~09h","title":"Transfer hotel → aeroporto Penang","detail":"","type":"transfer"},
-  {"id":17,"date":"30 Jul","time":"11h55","title":"Voo SQ 133 · Penang → Singapura","detail":"Chegada 13h35","type":"flight"},
-  {"id":18,"date":"30 Jul","time":"~14h","title":"Transfer aeroporto → hotel Singapura","detail":"€75 ida e volta","type":"transfer"},
-  {"id":19,"date":"30 Jul","time":"","title":"Check-in Holiday Inn Express Clarke Quay","detail":"3 noites · 2 quartos duplos · €1.040","type":"hotel"},
-  {"id":20,"date":"2 Ago","time":"~18h30","title":"Transfer hotel → aeroporto Singapura","detail":"","type":"transfer"},
-  {"id":21,"date":"2 Ago","time":"","title":"Voo Singapura → Istambul → Porto","detail":"Turkish Airlines · chegada ao Porto","type":"flight"}
+  {
+    "id": 1,
+    "date": "17 Jul",
+    "time": "~22h",
+    "title": "Autocarro Porto → Lisboa",
+    "detail": "Viagem noturna até ao Aeroporto de Lisboa",
+    "type": "bus"
+  },
+  {
+    "id": 2,
+    "date": "18 Jul",
+    "time": "",
+    "title": "Voo Lisboa → Istambul",
+    "detail": "Turkish Airlines · escala em Istambul",
+    "type": "flight"
+  },
+  {
+    "id": 3,
+    "date": "18 Jul",
+    "time": "01h40",
+    "title": "Voo Istambul → Kuala Lumpur",
+    "detail": "TK 60 · chegada 17h15 (+1 dia, 19 Jul)",
+    "type": "flight"
+  },
+  {
+    "id": 4,
+    "date": "19 Jul",
+    "time": "17h15",
+    "title": "Chegada a Kuala Lumpur",
+    "detail": "Transfer aeroporto → hotel (€52 ida e volta)",
+    "type": "transfer"
+  },
+  {
+    "id": 5,
+    "date": "19 Jul",
+    "time": "",
+    "title": "Check-in Novotel KL City Centre",
+    "detail": "4 noites · 2 quartos duplos · €790",
+    "type": "hotel"
+  },
+  {
+    "id": 6,
+    "date": "23 Jul",
+    "time": "~08h",
+    "title": "Transfer hotel → aeroporto KL",
+    "detail": "",
+    "type": "transfer"
+  },
+  {
+    "id": 7,
+    "date": "23 Jul",
+    "time": "10h20",
+    "title": "Voo FY1146 · KL → Kota Bharu",
+    "detail": "Chegada 11h30",
+    "type": "flight"
+  },
+  {
+    "id": 8,
+    "date": "23 Jul",
+    "time": "~12h",
+    "title": "Transfer Vellfire · aeroporto → Kuala Besut Jetty",
+    "detail": "Confirmação #81219132 · ~90 min viagem",
+    "type": "transfer"
+  },
+  {
+    "id": 9,
+    "date": "23 Jul",
+    "time": "14h00",
+    "title": "Ferry hotel para Perhentian Island",
+    "detail": "Último ferry do hotel: 14h00. Backup: barco público (RM40/pax, cash MYR)",
+    "type": "ferry"
+  },
+  {
+    "id": 10,
+    "date": "23 Jul",
+    "time": "",
+    "title": "Check-in Marriott Resort & Spa",
+    "detail": "4 noites · 2 quartos duplos · €2.450",
+    "type": "hotel"
+  },
+  {
+    "id": 11,
+    "date": "27 Jul",
+    "time": "12h00",
+    "title": "Ferry Marriott → Kuala Besut Jetty",
+    "detail": "Recomendado o das 12h00 (16h00 é arriscado)",
+    "type": "ferry"
+  },
+  {
+    "id": 12,
+    "date": "27 Jul",
+    "time": "~13h30",
+    "title": "Transfer Vellfire · Jetty → aeroporto Kota Bharu",
+    "detail": "Confirmação #81219145 · ~90 min",
+    "type": "transfer"
+  },
+  {
+    "id": 13,
+    "date": "27 Jul",
+    "time": "20h20",
+    "title": "Voo MH5507 · Kota Bharu → Penang",
+    "detail": "Chegada 21h20",
+    "type": "flight"
+  },
+  {
+    "id": 14,
+    "date": "27 Jul",
+    "time": "~22h",
+    "title": "Transfer aeroporto → hotel Penang",
+    "detail": "€45 ida e volta",
+    "type": "transfer"
+  },
+  {
+    "id": 15,
+    "date": "27 Jul",
+    "time": "",
+    "title": "Check-in JEN Penang by Shangri-La",
+    "detail": "3 noites · 2 quartos duplos · €581",
+    "type": "hotel"
+  },
+  {
+    "id": 16,
+    "date": "30 Jul",
+    "time": "~09h",
+    "title": "Transfer hotel → aeroporto Penang",
+    "detail": "",
+    "type": "transfer"
+  },
+  {
+    "id": 17,
+    "date": "30 Jul",
+    "time": "11h55",
+    "title": "Voo SQ 133 · Penang → Singapura",
+    "detail": "Chegada 13h35",
+    "type": "flight"
+  },
+  {
+    "id": 18,
+    "date": "30 Jul",
+    "time": "~14h",
+    "title": "Transfer aeroporto → hotel Singapura",
+    "detail": "€75 ida e volta",
+    "type": "transfer"
+  },
+  {
+    "id": 19,
+    "date": "30 Jul",
+    "time": "",
+    "title": "Check-in Holiday Inn Express Clarke Quay",
+    "detail": "3 noites · 2 quartos duplos · €1.040",
+    "type": "hotel"
+  },
+  {
+    "id": 20,
+    "date": "2 Ago",
+    "time": "~18h30",
+    "title": "Transfer hotel → aeroporto Singapura",
+    "detail": "",
+    "type": "transfer"
+  },
+  {
+    "id": 21,
+    "date": "2 Ago",
+    "time": "",
+    "title": "Voo Singapura → Istambul → Porto",
+    "detail": "Turkish Airlines · chegada ao Porto",
+    "type": "flight"
+  },
+  {
+    "id": 22,
+    "date": "20 Jul",
+    "time": "15h15",
+    "title": "Jamboo Café",
+    "detail": "Café Bubble Tea Mão de Monstro",
+    "type": "restaurant"
+  }
 ]

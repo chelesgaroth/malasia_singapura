@@ -1,0 +1,109 @@
+name: "🗑️ Delete Events"
+on:
+  workflow_dispatch:
+    inputs:
+      ids:
+        description: 'Event IDs to delete, comma-separated (e.g. 5,12,18). Leave empty to use filters below.'
+        required: false
+        default: ''
+      date:
+        description: 'Filter by date (only used when IDs is empty)'
+        required: true
+        type: choice
+        default: '-- all --'
+        options:
+          - '-- all --'
+          - '17 Jul'
+          - '18 Jul'
+          - '19 Jul'
+          - '20 Jul'
+          - '21 Jul'
+          - '22 Jul'
+          - '23 Jul'
+          - '24 Jul'
+          - '25 Jul'
+          - '26 Jul'
+          - '27 Jul'
+          - '28 Jul'
+          - '29 Jul'
+          - '30 Jul'
+          - '31 Jul'
+          - '1 Ago'
+          - '2 Ago'
+      type:
+        description: 'Filter by type (only used when IDs is empty)'
+        required: true
+        type: choice
+        default: '-- all --'
+        options:
+          - '-- all --'
+          - activity
+          - restaurant
+          - note
+          - shopping
+          - flight
+          - hotel
+          - transfer
+          - ferry
+          - bus
+          - transport
+      title_contains:
+        description: 'Filter by title containing this text (only used when IDs is empty)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Delete matching events
+        env:
+          IDS: ${{ inputs.ids }}
+          FILTER_DATE: ${{ inputs.date }}
+          FILTER_TYPE: ${{ inputs.type }}
+          TITLE_CONTAINS: ${{ inputs.title_contains }}
+        run: |
+          BEFORE=$(jq length data/events.json)
+
+          if [ -n "$IDS" ]; then
+            IDS_JSON=$(echo "$IDS" | tr ',' '\n' | sed 's/[[:space:]]//g' | jq -R 'tonumber' | jq -s '.')
+            jq --argjson ids "$IDS_JSON" \
+              '[.[] | select(.id | IN($ids[]) | not)]' \
+              data/events.json > tmp.json && mv tmp.json data/events.json
+          else
+            jq \
+              --arg date "$FILTER_DATE" \
+              --arg type "$FILTER_TYPE" \
+              --arg title "$TITLE_CONTAINS" \
+              '[.[] | select(
+                ((if $date == "-- all --" then true else .date == $date end) and
+                 (if $type == "-- all --" then true else .type == $type end) and
+                 (if $title == "" then true else (.title | test($title; "i")) end))
+                | not
+              )]' \
+              data/events.json > tmp.json && mv tmp.json data/events.json
+          fi
+
+          AFTER=$(jq length data/events.json)
+          DELETED=$((BEFORE - AFTER))
+          echo "DELETED=$DELETED" >> "$GITHUB_ENV"
+
+          if [ "$DELETED" -eq 0 ]; then
+            echo "::notice::No events matched the filters. Nothing was deleted."
+            exit 0
+          fi
+          echo "::notice::Deleted $DELETED event(s)."
+
+      - name: Commit & push
+        if: env.DELETED != '0'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/events.json
+          git commit -m "Delete ${{ env.DELETED }} event(s)"
+          git push

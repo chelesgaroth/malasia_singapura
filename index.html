@@ -72,6 +72,12 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg)
 .pill-transfer{background:var(--amber-bg);color:var(--amber)}
 .pill-ferry{background:var(--teal-bg);color:var(--teal)}
 .pill-bus{background:var(--pink-bg);color:var(--pink)}
+.pill-activity{background:rgba(59,130,246,.15);color:#60a5fa}
+.pill-restaurant{background:var(--coral-bg);color:var(--coral)}
+.pill-note{background:var(--amber-bg);color:var(--amber)}
+.pill-transport{background:var(--teal-bg);color:var(--teal)}
+.pill-shopping{background:var(--pink-bg);color:var(--pink)}
+.evt-id{font-size:9px;color:var(--text3);opacity:.5}
 .hotel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;position:relative}
 .hotel-name{font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px}
 .hotel-meta{display:flex;flex-wrap:wrap;gap:8px;font-size:11px;color:var(--text2);margin-bottom:8px}
@@ -132,7 +138,6 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg)
 </div>
 <div class="sect-title">Itinerário dia a dia</div>
 <div id="days"></div>
-<div id="extra-events"></div>
 </div>
 
 <div id="tab-hotels" class="section">
@@ -242,70 +247,79 @@ cd.innerHTML='<i class="ti ti-plane-departure" style="font-size:13px"></i> '+d+'
 }
 updateCD();setInterval(updateCD,36e5);
 
-const days=[
-{date:"17 Jul, Qui",loc:"Porto → Lisboa",color:"var(--pink)",colorBg:"var(--pink-bg)",events:[
-{time:"~22h",title:"Autocarro Porto → Lisboa",detail:"Viagem noturna até ao Aeroporto de Lisboa",pill:"bus",pillLabel:"Autocarro"}
-]},
-{date:"18 Jul, Sex",loc:"Lisboa → Istambul → KL",color:"var(--accent2)",colorBg:"rgba(59,130,246,.15)",events:[
-{time:"",title:"Voo Lisboa → Istambul",detail:"Turkish Airlines · escala em Istambul",pill:"flight",pillLabel:"Voo"},
-{time:"01h40",title:"Voo Istambul → Kuala Lumpur",detail:"TK 60 · chegada 17h15 (+1 dia, 19 Jul)",pill:"flight",pillLabel:"Voo"}
-]},
-{date:"19 Jul, Sáb",loc:"Kuala Lumpur",color:"var(--green)",colorBg:"var(--green-bg)",events:[
-{time:"17h15",title:"Chegada a Kuala Lumpur",detail:"Transfer aeroporto → hotel (€52 ida e volta)",pill:"transfer",pillLabel:"Transfer"},
-{time:"",title:"Check-in Novotel KL City Centre",detail:"4 noites · 2 quartos duplos · €790",pill:"hotel",pillLabel:"Hotel"}
-]},
-{date:"23 Jul, Qui",loc:"KL → Kota Bharu → Perhentian",color:"var(--teal)",colorBg:"var(--teal-bg)",events:[
-{time:"~08h",title:"Transfer hotel → aeroporto KL",detail:"",pill:"transfer",pillLabel:"Transfer"},
-{time:"10h20",title:"Voo FY1146 · KL → Kota Bharu",detail:"Chegada 11h30",pill:"flight",pillLabel:"Voo"},
-{time:"~12h",title:"Transfer Vellfire · aeroporto → Kuala Besut Jetty",detail:"Confirmação #81219132 · ~90 min viagem",pill:"transfer",pillLabel:"Transfer"},
-{time:"14h00",title:"Ferry hotel para Perhentian Island",detail:"Último ferry do hotel: 14h00. Backup: barco público (RM40/pax, cash MYR)",pill:"ferry",pillLabel:"Ferry"},
-{time:"",title:"Check-in Marriott Resort & Spa",detail:"4 noites · 2 quartos duplos · €2.450",pill:"hotel",pillLabel:"Hotel"}
-]},
-{date:"27 Jul, Dom",loc:"Perhentian → Penang",color:"var(--coral)",colorBg:"var(--coral-bg)",events:[
-{time:"12h00",title:"Ferry Marriott → Kuala Besut Jetty",detail:"Recomendado o das 12h00 (16h00 é arriscado)",pill:"ferry",pillLabel:"Ferry"},
-{time:"~13h30",title:"Transfer Vellfire · Jetty → aeroporto Kota Bharu",detail:"Confirmação #81219145 · ~90 min",pill:"transfer",pillLabel:"Transfer"},
-{time:"20h20",title:"Voo MH5507 · Kota Bharu → Penang",detail:"Chegada 21h20",pill:"flight",pillLabel:"Voo"},
-{time:"~22h",title:"Transfer aeroporto → hotel Penang",detail:"€45 ida e volta",pill:"transfer",pillLabel:"Transfer"},
-{time:"",title:"Check-in JEN Penang by Shangri-La",detail:"3 noites · 2 quartos duplos · €581",pill:"hotel",pillLabel:"Hotel"}
-]},
-{date:"30 Jul, Qui",loc:"Penang → Singapura",color:"var(--accent2)",colorBg:"rgba(59,130,246,.15)",events:[
-{time:"~09h",title:"Transfer hotel → aeroporto Penang",detail:"",pill:"transfer",pillLabel:"Transfer"},
-{time:"11h55",title:"Voo SQ 133 · Penang → Singapura",detail:"Chegada 13h35",pill:"flight",pillLabel:"Voo"},
-{time:"~14h",title:"Transfer aeroporto → hotel Singapura",detail:"€75 ida e volta",pill:"transfer",pillLabel:"Transfer"},
-{time:"",title:"Check-in Holiday Inn Express Clarke Quay",detail:"3 noites · 2 quartos duplos · €1.040",pill:"hotel",pillLabel:"Hotel"}
-]},
-{date:"2 Ago, Sáb",loc:"Singapura → Porto",color:"var(--pink)",colorBg:"var(--pink-bg)",events:[
-{time:"~18h30",title:"Transfer hotel → aeroporto Singapura",detail:"",pill:"transfer",pillLabel:"Transfer"},
-{time:"",title:"Voo Singapura → Istambul → Porto",detail:"Turkish Airlines · chegada ao Porto",pill:"flight",pillLabel:"Voo"}
-]}
-];
+const dayMeta={
+"17 Jul":{dow:"Sex",loc:"Porto → Lisboa",color:"var(--pink)",colorBg:"var(--pink-bg)"},
+"18 Jul":{dow:"Sáb",loc:"Lisboa → Istambul → KL",color:"var(--accent2)",colorBg:"rgba(59,130,246,.15)"},
+"19 Jul":{dow:"Dom",loc:"Kuala Lumpur",color:"var(--green)",colorBg:"var(--green-bg)"},
+"20 Jul":{dow:"Seg",loc:"Kuala Lumpur",color:"var(--green)",colorBg:"var(--green-bg)"},
+"21 Jul":{dow:"Ter",loc:"Kuala Lumpur",color:"var(--green)",colorBg:"var(--green-bg)"},
+"22 Jul":{dow:"Qua",loc:"Kuala Lumpur",color:"var(--green)",colorBg:"var(--green-bg)"},
+"23 Jul":{dow:"Qui",loc:"KL → Kota Bharu → Perhentian",color:"var(--teal)",colorBg:"var(--teal-bg)"},
+"24 Jul":{dow:"Sex",loc:"Perhentian",color:"var(--teal)",colorBg:"var(--teal-bg)"},
+"25 Jul":{dow:"Sáb",loc:"Perhentian",color:"var(--teal)",colorBg:"var(--teal-bg)"},
+"26 Jul":{dow:"Dom",loc:"Perhentian",color:"var(--teal)",colorBg:"var(--teal-bg)"},
+"27 Jul":{dow:"Seg",loc:"Perhentian → Penang",color:"var(--coral)",colorBg:"var(--coral-bg)"},
+"28 Jul":{dow:"Ter",loc:"Penang",color:"var(--coral)",colorBg:"var(--coral-bg)"},
+"29 Jul":{dow:"Qua",loc:"Penang",color:"var(--coral)",colorBg:"var(--coral-bg)"},
+"30 Jul":{dow:"Qui",loc:"Penang → Singapura",color:"var(--accent2)",colorBg:"rgba(59,130,246,.15)"},
+"31 Jul":{dow:"Sex",loc:"Singapura",color:"var(--accent2)",colorBg:"rgba(59,130,246,.15)"},
+"1 Ago":{dow:"Sáb",loc:"Singapura",color:"var(--accent2)",colorBg:"rgba(59,130,246,.15)"},
+"2 Ago":{dow:"Dom",loc:"Singapura → Porto",color:"var(--pink)",colorBg:"var(--pink-bg)"}
+};
+const dateOrder=["17 Jul","18 Jul","19 Jul","20 Jul","21 Jul","22 Jul","23 Jul","24 Jul","25 Jul","26 Jul","27 Jul","28 Jul","29 Jul","30 Jul","31 Jul","1 Ago","2 Ago"];
+const pillTypes={
+flight:{cls:'pill-flight',label:'Voo'},
+hotel:{cls:'pill-hotel',label:'Hotel'},
+transfer:{cls:'pill-transfer',label:'Transfer'},
+ferry:{cls:'pill-ferry',label:'Ferry'},
+bus:{cls:'pill-bus',label:'Autocarro'},
+activity:{cls:'pill-activity',label:'Atividade'},
+restaurant:{cls:'pill-restaurant',label:'Restaurante'},
+note:{cls:'pill-note',label:'Nota'},
+transport:{cls:'pill-transport',label:'Transporte'},
+shopping:{cls:'pill-shopping',label:'Compras'}
+};
 
+function esc(s){const el=document.createElement('div');el.textContent=s;return el.innerHTML}
+function timeKey(t){if(!t)return 99;const m=t.match(/(\d+)/);return m?parseInt(m[1]):99}
+
+fetch('data/events.json?v='+Date.now())
+.then(r=>r.ok?r.json():Promise.reject())
+.then(events=>{
+const grouped={};
+events.forEach(e=>{(grouped[e.date]=grouped[e.date]||[]).push(e)});
 const dc=document.getElementById('days');
-days.forEach((d,i)=>{
-const open=i<2;
+let shown=0;
+dateOrder.forEach(date=>{
+const evts=grouped[date];
+if(!evts||!evts.length)return;
+evts.sort((a,b)=>timeKey(a.time)-timeKey(b.time));
+const meta=dayMeta[date]||{dow:'',loc:'',color:'var(--text)',colorBg:'var(--bg3)'};
+const open=shown<2;shown++;
 const el=document.createElement('div');
 el.className='day'+(open?' open':'');
 el.innerHTML=`
 <div class="day-head" onclick="this.parentElement.classList.toggle('open')">
 <div class="left">
-<div class="day-num" style="background:${d.colorBg};color:${d.color}">${d.date.split(' ')[0].replace(',','')}</div>
-<div class="day-info"><div class="date">${d.date}</div><div class="loc">${d.loc}</div></div>
+<div class="day-num" style="background:${meta.colorBg};color:${meta.color}">${esc(date.split(' ')[0])}</div>
+<div class="day-info"><div class="date">${esc(date+', '+meta.dow)}</div><div class="loc">${esc(meta.loc)}</div></div>
 </div>
 <i class="ti ti-chevron-down chev"></i>
 </div>
 <div class="day-body">
-${d.events.map(e=>`
+${evts.map(e=>{const p=pillTypes[e.type]||pillTypes.activity;return`
 <div class="evt">
-<div class="evt-time">${e.time}</div>
+<div class="evt-time">${esc(e.time||'')}</div>
 <div class="evt-body">
-<div class="evt-title">${e.title}</div>
-${e.detail?`<div class="evt-detail">${e.detail}</div>`:''}
-<span class="pill pill-${e.pill}">${e.pillLabel}</span>
+<div class="evt-title">${esc(e.title)} <span class="evt-id">#${e.id}</span></div>
+${e.detail?`<div class="evt-detail">${esc(e.detail)}</div>`:''}
+<span class="pill ${p.cls}">${p.label}</span>
 </div>
-</div>`).join('')}
+</div>`}).join('')}
 </div>`;
 dc.appendChild(el);
 });
+}).catch(()=>{});
 
 const hotels=[
 {name:"Novotel Kuala Lumpur City Centre",stars:"4★",rating:"8.3",dates:"19–23 Jul",nights:4,price:790,note:"Tarifa flexível · piscina · boa localização central"},
@@ -347,51 +361,6 @@ pc.innerHTML+=`
 </div>
 </div>`;
 });
-
-const typeStyles={
-activity:{color:'var(--accent2)',bg:'rgba(59,130,246,.15)',label:'Atividade'},
-restaurant:{color:'var(--coral)',bg:'var(--coral-bg)',label:'Restaurante'},
-note:{color:'var(--amber)',bg:'var(--amber-bg)',label:'Nota'},
-transport:{color:'var(--teal)',bg:'var(--teal-bg)',label:'Transporte'},
-shopping:{color:'var(--pink)',bg:'var(--pink-bg)',label:'Compras'}
-};
-function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
-fetch('data/events.json?v='+Date.now())
-.then(r=>r.ok?r.json():Promise.reject())
-.then(events=>{
-if(!events.length)return;
-const grouped={};
-events.forEach(e=>{(grouped[e.date]=grouped[e.date]||[]).push(e)});
-const c=document.getElementById('extra-events');
-const t=document.createElement('div');
-t.className='sect-title';t.textContent='Notas & extras';
-c.appendChild(t);
-Object.entries(grouped).forEach(([date,evts])=>{
-const s=typeStyles[evts[0].type]||typeStyles.activity;
-const el=document.createElement('div');
-el.className='day open';
-el.innerHTML=`
-<div class="day-head" onclick="this.parentElement.classList.toggle('open')">
-<div class="left">
-<div class="day-num" style="background:${s.bg};color:${s.color}">${esc(date.split(' ')[0])}</div>
-<div class="day-info"><div class="date">${esc(date)}</div><div class="loc">Extra</div></div>
-</div>
-<i class="ti ti-chevron-down chev"></i>
-</div>
-<div class="day-body">
-${evts.map(e=>{const st=typeStyles[e.type]||typeStyles.activity;return`
-<div class="evt">
-<div class="evt-time">${esc(e.time||'')}</div>
-<div class="evt-body">
-<div class="evt-title">${esc(e.title)}</div>
-${e.detail?`<div class="evt-detail">${esc(e.detail)}</div>`:''}
-<span class="pill" style="background:${st.bg};color:${st.color}">${st.label}</span>
-</div>
-</div>`}).join('')}
-</div>`;
-c.appendChild(el);
-});
-}).catch(()=>{});
 </script>
 </body>
 </html>

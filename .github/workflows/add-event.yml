@@ -1,14 +1,70 @@
-name: ➕ Add Event
+name: "➕ Add Event"
 on:
   workflow_dispatch:
     inputs:
       date:
-        description: 'Date (e.g. 20 Jul)'
+        description: 'Trip date'
         required: true
-      time:
-        description: 'Time (e.g. 14h00) — leave empty if none'
-        required: false
-        default: ''
+        type: choice
+        options:
+          - '17 Jul'
+          - '18 Jul'
+          - '19 Jul'
+          - '20 Jul'
+          - '21 Jul'
+          - '22 Jul'
+          - '23 Jul'
+          - '24 Jul'
+          - '25 Jul'
+          - '26 Jul'
+          - '27 Jul'
+          - '28 Jul'
+          - '29 Jul'
+          - '30 Jul'
+          - '31 Jul'
+          - '1 Ago'
+          - '2 Ago'
+      hour:
+        description: 'Hour (pick "none" for no specific time)'
+        required: true
+        type: choice
+        default: 'none'
+        options:
+          - none
+          - '06'
+          - '07'
+          - '08'
+          - '09'
+          - '10'
+          - '11'
+          - '12'
+          - '13'
+          - '14'
+          - '15'
+          - '16'
+          - '17'
+          - '18'
+          - '19'
+          - '20'
+          - '21'
+          - '22'
+          - '23'
+          - '00'
+          - '01'
+          - '02'
+          - '03'
+          - '04'
+          - '05'
+      minutes:
+        description: 'Minutes'
+        required: true
+        type: choice
+        default: '00'
+        options:
+          - '00'
+          - '15'
+          - '30'
+          - '45'
       title:
         description: 'Event title'
         required: true
@@ -25,8 +81,13 @@ on:
           - activity
           - restaurant
           - note
-          - transport
           - shopping
+          - flight
+          - hotel
+          - transfer
+          - ferry
+          - bus
+          - transport
 
 permissions:
   contents: write
@@ -40,26 +101,36 @@ jobs:
       - name: Append event to JSON
         env:
           EVENT_DATE: ${{ inputs.date }}
-          EVENT_TIME: ${{ inputs.time }}
+          EVENT_HOUR: ${{ inputs.hour }}
+          EVENT_MIN: ${{ inputs.minutes }}
           EVENT_TITLE: ${{ inputs.title }}
           EVENT_DETAIL: ${{ inputs.detail }}
           EVENT_TYPE: ${{ inputs.type }}
         run: |
+          if [ "$EVENT_HOUR" = "none" ]; then
+            TIME=""
+          else
+            TIME="${EVENT_HOUR}h${EVENT_MIN}"
+          fi
+          MAX_ID=$(jq '[.[].id] | max // 0' data/events.json)
+          NEW_ID=$((MAX_ID + 1))
           jq \
             --arg date "$EVENT_DATE" \
-            --arg time "$EVENT_TIME" \
+            --arg time "$TIME" \
             --arg title "$EVENT_TITLE" \
             --arg detail "$EVENT_DETAIL" \
             --arg type "$EVENT_TYPE" \
-            '. += [{"date": $date, "time": $time, "title": $title, "detail": $detail, "type": $type}]' \
+            --argjson id "$NEW_ID" \
+            '. += [{"id": $id, "date": $date, "time": $time, "title": $title, "detail": $detail, "type": $type}]' \
             data/events.json > tmp.json && mv tmp.json data/events.json
 
       - name: Commit & push
         env:
           EVENT_TITLE: ${{ inputs.title }}
+          EVENT_DATE: ${{ inputs.date }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/events.json
-          git commit -m "Add event: ${EVENT_TITLE}"
+          git commit -m "Add event (${EVENT_DATE}): ${EVENT_TITLE}"
           git push

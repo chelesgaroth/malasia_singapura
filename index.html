@@ -132,6 +132,7 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg)
 </div>
 <div class="sect-title">Itinerário dia a dia</div>
 <div id="days"></div>
+<div id="extra-events"></div>
 </div>
 
 <div id="tab-hotels" class="section">
@@ -346,6 +347,51 @@ pc.innerHTML+=`
 </div>
 </div>`;
 });
+
+const typeStyles={
+activity:{color:'var(--accent2)',bg:'rgba(59,130,246,.15)',label:'Atividade'},
+restaurant:{color:'var(--coral)',bg:'var(--coral-bg)',label:'Restaurante'},
+note:{color:'var(--amber)',bg:'var(--amber-bg)',label:'Nota'},
+transport:{color:'var(--teal)',bg:'var(--teal-bg)',label:'Transporte'},
+shopping:{color:'var(--pink)',bg:'var(--pink-bg)',label:'Compras'}
+};
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+fetch('data/events.json?v='+Date.now())
+.then(r=>r.ok?r.json():Promise.reject())
+.then(events=>{
+if(!events.length)return;
+const grouped={};
+events.forEach(e=>{(grouped[e.date]=grouped[e.date]||[]).push(e)});
+const c=document.getElementById('extra-events');
+const t=document.createElement('div');
+t.className='sect-title';t.textContent='Notas & extras';
+c.appendChild(t);
+Object.entries(grouped).forEach(([date,evts])=>{
+const s=typeStyles[evts[0].type]||typeStyles.activity;
+const el=document.createElement('div');
+el.className='day open';
+el.innerHTML=`
+<div class="day-head" onclick="this.parentElement.classList.toggle('open')">
+<div class="left">
+<div class="day-num" style="background:${s.bg};color:${s.color}">${esc(date.split(' ')[0])}</div>
+<div class="day-info"><div class="date">${esc(date)}</div><div class="loc">Extra</div></div>
+</div>
+<i class="ti ti-chevron-down chev"></i>
+</div>
+<div class="day-body">
+${evts.map(e=>{const st=typeStyles[e.type]||typeStyles.activity;return`
+<div class="evt">
+<div class="evt-time">${esc(e.time||'')}</div>
+<div class="evt-body">
+<div class="evt-title">${esc(e.title)}</div>
+${e.detail?`<div class="evt-detail">${esc(e.detail)}</div>`:''}
+<span class="pill" style="background:${st.bg};color:${st.color}">${st.label}</span>
+</div>
+</div>`}).join('')}
+</div>`;
+c.appendChild(el);
+});
+}).catch(()=>{});
 </script>
 </body>
 </html>

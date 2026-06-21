@@ -1,0 +1,65 @@
+name: ➕ Add Event
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Date (e.g. 20 Jul)'
+        required: true
+      time:
+        description: 'Time (e.g. 14h00) — leave empty if none'
+        required: false
+        default: ''
+      title:
+        description: 'Event title'
+        required: true
+      detail:
+        description: 'Details / description'
+        required: false
+        default: ''
+      type:
+        description: 'Category'
+        required: true
+        default: 'activity'
+        type: choice
+        options:
+          - activity
+          - restaurant
+          - note
+          - transport
+          - shopping
+
+permissions:
+  contents: write
+
+jobs:
+  add:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Append event to JSON
+        env:
+          EVENT_DATE: ${{ inputs.date }}
+          EVENT_TIME: ${{ inputs.time }}
+          EVENT_TITLE: ${{ inputs.title }}
+          EVENT_DETAIL: ${{ inputs.detail }}
+          EVENT_TYPE: ${{ inputs.type }}
+        run: |
+          jq \
+            --arg date "$EVENT_DATE" \
+            --arg time "$EVENT_TIME" \
+            --arg title "$EVENT_TITLE" \
+            --arg detail "$EVENT_DETAIL" \
+            --arg type "$EVENT_TYPE" \
+            '. += [{"date": $date, "time": $time, "title": $title, "detail": $detail, "type": $type}]' \
+            data/events.json > tmp.json && mv tmp.json data/events.json
+
+      - name: Commit & push
+        env:
+          EVENT_TITLE: ${{ inputs.title }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/events.json
+          git commit -m "Add event: ${EVENT_TITLE}"
+          git push

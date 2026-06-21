@@ -166,5 +166,13 @@
     "title": "Voo Singapura → Istambul → Porto",
     "detail": "Turkish Airlines · chegada ao Porto",
     "type": "flight"
+  },
+  {
+    "id": 22,
+    "date": "20 Jul",
+    "time": "13h00",
+    "title": "Restaurante A",
+    "detail": "",
+    "type": "restaurant"
   }
 ]

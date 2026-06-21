@@ -166,13 +166,5 @@
     "title": "Voo Singapura → Istambul → Porto",
     "detail": "Turkish Airlines · chegada ao Porto",
     "type": "flight"
-  },
-  {
-    "id": 22,
-    "date": "20 Jul",
-    "time": "06h00",
-    "title": "Café Jamboo",
-    "detail": "Olá",
-    "type": "restaurant"
   }
 ]
